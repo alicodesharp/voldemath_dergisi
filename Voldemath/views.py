@@ -542,8 +542,8 @@ def yeniPaylasimci(request, user_id):
     if not istek_yollayan_kullanici.daha_once_paylasimci_istegi_yapti_mi:
         send_mail("Voldemath'da yeni bir paylaşımcı isteği var","Merhaba "+ str(istek_yollayan_kullanici.first_name) + ' ' + str(
             istek_yollayan_kullanici.last_name)+ ' adlı kullanıcı senden paylaşım yapabilmek için izin istiyor.'
-                                                 'Eğer kullanıcının paylaşım yapabilmesini istiyorsan aşağıdaki linke tıkla veya kullanıcının profilini görmek için profil linkini kullanabilirsin. \n'
-                                                 'İzin vermek için link: '+str(link) +"\n"+"Profil linki: "+ str(profil_link),str(istek_yollayan_kullanici.email),adminlerin_email_adresleri,fail_silently=False)
+                                                 'Eğer kullanıcının paylaşım yapabilmesini istiyorsan aşağıdaki linke tıklayabilirsin. \n'
+                                                 'İzin vermek için link: '+str(link),str(istek_yollayan_kullanici.email),adminlerin_email_adresleri,fail_silently=False)
         istek = User.objects.get(id=user_id)
         istek.daha_once_paylasimci_istegi_yapti_mi = True
         istek.save()
@@ -571,9 +571,9 @@ def yeniMakaleci(request,user_id):
         send_mail("Voldemath'da yeni bir makaleci isteği var",
                   "Merhaba " + str(istek_yollayan_kullanici.first_name) + ' ' + str(
                       istek_yollayan_kullanici.last_name) + ' adlı kullanıcı senden yeni makaleler paylaşabilmek için izin istiyor.'
-                                                            'Eğer kullanıcının paylaşım yapabilmesini istiyorsan aşağıdaki linke tıkla veya kullanıcının profilini görmek için profil linkini kullanabilirsin. \n'
+                                                            'Eğer kullanıcının paylaşım yapabilmesini istiyorsan aşağıdaki linke tıklayabilirsin. \n'
                                                             'İzin vermek için link: ' + str(
-                      link) + "\n" + "Profil linki: " + str(profil_link), str(istek_yollayan_kullanici.email),
+                      link), str(istek_yollayan_kullanici.email),
                   adminlerin_email_adresleri, fail_silently=False)
         istek = User.objects.get(id=user_id)
         istek.daha_once_makaleci_istegi_yapti_mi = True
