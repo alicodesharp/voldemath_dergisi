@@ -256,7 +256,7 @@ class kayit(FormView):
             )
             user.set_password('{}'.format(form.cleaned_data['password']))
             user.save()
-            link = "http://127.0.0.1:8000/hesabini_aktif_et/" + str(username)
+            link = "https://gsuvoldemath.pythonanywhere.com/hesabini_aktif_et/" + str(username)
             send_mail('Hesabını aktif et'
                       ,'Merhaba '+str(form.cleaned_data["first_name"])+ " "+ str(form.cleaned_data["last_name"])+ ". Voldemath hesabını aktifleştirmek için aşağıdaki linke tıkla \n"+
                       "\n"+
@@ -533,8 +533,8 @@ def yeniPaylasimci(request, user_id):
     for kullanici in kullanicilar:
         if kullanici.isAdmin:
             adminlerin_email_adresleri.append(str(kullanici.email))
-    link = 'http://127.0.0.1:8000/kullaniciya_izin_ver/14504169u'+str(user_id)
-    profil_link = 'http://127.0.0.1:8000/profil/'+str(user_id)
+    link = 'https://gsuvoldemath.pythonanywhere.com/kullaniciya_izin_ver/14504169u'+str(user_id)
+    profil_link = 'https://gsuvoldemath.pythonanywhere.com/profil/'+str(user_id)
     print(adminlerin_email_adresleri)
     print(link)
     print(profil_link)
@@ -561,8 +561,8 @@ def yeniMakaleci(request,user_id):
     for kullanici in kullanicilar:
         if kullanici.isAdmin:
             adminlerin_email_adresleri.append(str(kullanici.email))
-    link = 'http://127.0.0.1:8000/kullaniciya_makale_izni_ver/14504169u' + str(user_id)
-    profil_link = 'http://127.0.0.1:8000/profil/' + str(user_id)
+    link = 'https://gsuvoldemath.pythonanywhere.com/kullaniciya_makale_izni_ver/14504169u' + str(user_id)
+    profil_link = 'https://gsuvoldemath.pythonanywhere.com/profil/' + str(user_id)
     print(adminlerin_email_adresleri)
     print(link)
     print(profil_link)
