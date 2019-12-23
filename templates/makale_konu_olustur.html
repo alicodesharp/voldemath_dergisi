@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'images/ikon.jpg' %}">
+    <title>Yeni Makele Paylaşımı · Voldemath</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/signin.css' %}" rel="stylesheet">
+    <link href="{% static 'css/voldemath.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Big+Shoulders+Text|Liu+Jian+Mao+Cao|Muli|Open+Sans+Condensed:300|Roboto+Condensed|Work+Sans&display=swap" rel="stylesheet">
+  </head>
+  <body lang="tr-tr" class="text-center bg-dark">
+    <form class="form-signin" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+      <h1 class="h3 mb-3 font-weight-normal text-warning font-headers-5">Yeni bir makale konusu oluştur </h1>
+        <label for="{{ form.konuname.id_for_label }}" class="sr-only">ders</label>
+        <input placeholder="Konu adı: (Max 100 Harf)" type="text" class="form-control font-headers-2" name="{{ form.konuname.html_name }}" id="{{ form.konuname.id_for_label }}">
+      <input class="btn btn-lg btn-primary bg-warning btn-outline-danger btn-block" type="submit" value="Yeni konu ekle.">
+      <p class="mt-5 mb-3 text-warning">@ 2019-2020 Voldemath · GSU </p>
+        <p class="text-light"><a class="text-warning" href="/kendi_akisim/">Kendi akışıma geri dö &naturals;</a> | <a class="text-warning" href="/tum_akis/"> Tüm paylaşımlara geri dö &naturals;</a> </p>
+    </form>
+  </body>
+</html>

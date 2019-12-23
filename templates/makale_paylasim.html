@@ -1,0 +1,98 @@
+{% extends 'enter-world.html' %}
+{% load static %}
+{% block title %}
+    <title>Makele Paylaşım · Voldemath</title>
+{% endblock %}
+{% block icerik %}
+    <div class="wrapper" id="wrapper">
+        <header id="header" style="background-color: #1A2D34" class="header sticky-header cr-border-bottom">
+			<div class="container d-none d-lg-block">
+				<div class="header-inner">
+					<a href="/" class="logo">
+                        <h4 class="font-headers-4" style="color: #FFFFFF">Voldemath</h4>
+					</a>
+					<nav class="mainmenu">
+						<ul>
+							<li class="cr-dropdown">
+								<a href="index.html"></a>
+							</li>
+
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</header>
+    </div>
+    <div class="container">
+        <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+
+        <div class="panel panel-default" >
+            <div class="panel-heading">
+                <div class="panel-title text-center">Makale Paylaşım Ekranı</div>
+            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <hr color="green">
+                    <p class="text-success">{{message}}</p>
+                {% endfor %}
+            {% endif %}
+            {% if user.user.Makale_paylasabilir_mi %}
+            <div class="panel-body" >
+                <form name="form" id="form" class="form-horizontal" enctype="multipart/form-data" method="POST">
+                   {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-book"></i></span>
+                        <select id="{{ form.makale_konu.id_for_label }}" name="{{ form.makale_konu.html_name }}" class="form-control">
+                          {% for konu in makale_konular %}
+                          <option value="{{ konu.id }}" >{{ konu.konu_adi }}</option>
+                          {% endfor %}
+                        </select>
+                    </div>
+                    <p class="font-headers-3 text-center">Eğer konun yukarıda yok ise, <a style="color: #428bca" href="/yeniMakaleKonusu/">yeni bir konu oluştur</a></p>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-heading"></i></span>
+                        <input id="{{form.makale_baslik.id_for_label}}" type="text" class="form-control" name="{{ form.makale_baslik.html_name }}" value="" placeholder="Makalenizin başlığı(max 150 harf)" required>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input id="{{form.makale_yazar.id_for_label}}" type="text" class="form-control" name="{{ form.makale_yazar.html_name }}" value="" placeholder="Makalenin yayımlayıcısı" required>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-pencil-alt"></i></span>
+                        <textarea id="{{ form.makale_aciklama.id_for_label }}" name="{{ form.makale_aciklama.html_name }}" class="form-control" style="height: 100px;" placeholder="Makalenizin okuyuculara makaleniz hakkında genel anlamda kısaca bilgi verecek olan önyazısı (Max. 1500 Harf)" required></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-key"></i></span>
+                        <textarea id="{{ form.makale_anahtar_kelimeler.id_for_label }}" name="{{ form.makale_anahtar_kelimeler.html_name }}" class="form-control" style="height: 50px;" placeholder="Makalenizin konusu ile alakalı anahtar kelimeler (Virgülle ayırınız, ör: hypergeometric functions, analysis, differential equations, etc.)" required></textarea>
+                    </div>
+
+                    <p class="text-dark text-center font-headers-4">Makalenizin PDF versiyonunu ek olarak aşağıya yükleyiniz.</p>
+                    <input type="file" id="{{ form.makale_pdf_dosya.id_for_label }}" name="{{ form.makale_pdf_dosya.html_name }}" class="text-light text-center" style="position: relative; border: none; margin-left: 30%;" required>
+                    <hr class="bg-success">
+                    <p class="text-dark text-center font-headers-4">Makalenizin veya derginin karşılama sayfasında görünecek olan arkaplan resmini ek olarak aşağıya yükleyiniz.</p>
+                    <input type="file" id="{{ form.makale_arkaplan_resmi.id_for_label }}" name="{{ form.makale_arkaplan_resmi.html_name }}" class="text-light text-center" style="position: relative; border: none; margin-left: 30%;" required>
+                    <div class="form-group">
+                        <!-- Button -->
+                        <div class="col-sm-12 controls">
+                            <button type="submit" href="#" class="btn btn-primary btn-block font-headers-1"><i class="glyphicon glyphicon-log-in"></i> Makaleyi Paylaşıma Sun</button>
+                        </div>
+                    </div>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p class="text-success">{{message}}</p>
+                    {% endfor %}
+                    {% endif %}
+                </form>
+            <p class="text-left">Not: Makalenizi paylaşmak için gönderdiğinizde, makaleniz site adminlerimize onaylanmak üzere gönderilir ve onaylandığı takdirde size bir e-mail gönderilip bilgilendirilerek sitemizde yayınlanır.</p>
+            </div>
+            {% else %}
+                <p class="font-headers-3 text-center">Üzgünüz, şuanda bir makale paylaşıcısı değilsin, eğer makale paylaşmak istiyorsan <a style="color: #428bca" href="/yeniMakaleci/14504169u{{ user.id }}">bu linke</a> tıklayıp makale göndermek istediğine dair bir istek oluşturabilirsin.</p>
+
+            {% endif %}
+        </div>
+    </div>
+    </div>
+{% endblock %}

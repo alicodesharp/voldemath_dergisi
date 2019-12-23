@@ -1,0 +1,26 @@
+{% extends 'Giris_Yaptiktan_Sonra/Takip_Ettigim_Akis.html' %}
+{% load static %}
+{% block searchbar %}
+{% endblock %}
+{% block icerik %}
+    <main role="main" class="container">
+      <div style="background-color: #ffffff" class="align-items-center p-3 my-3 text-white-50 rounded shadow-sm">
+        <div class="lh-100 font-headers-2 text-dark">
+          <h4 class="mb-0 text-dark lh-100 text-center">Yayınlanan makale konularımız</h4>
+            <hr color="green">
+            <br>
+            {% for ders in dersler %}
+            <form method="post" action="/follow/{{ders.id}}">
+                <div class="media font-headers-2 pt-3 text-left">
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom {% if ders not in user.user.follows.all %}{% else %}border-danger{% endif %}">
+                {{ders.konu_adi}}</p>
+                {% csrf_token %}
+                <input type="submit" class="btn-sm {% if ders not in user.user.follows.all %}btn-warning{% else %}btn-danger{% endif %}" value="{% if ders not in user.user.follows.all %}Takip Et {% else%} Takibi Bırak {% endif %}">
+                </div>
+            </form>
+
+          {% endfor %}
+        </div>
+      </div>
+    </main>
+{% endblock %}

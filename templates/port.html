@@ -1,0 +1,49 @@
+{% extends 'giris_yapan_kullanici_karsilama.html' %}
+{% load static %}
+{% block backgroundimg %}
+    background: url('/static/images/valley2.jpg') no-repeat center center fixed;
+{% endblock %}
+{% block css %}
+    <link href="{% static 'css/mybootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/offcanvas.css' %}" rel="stylesheet">
+    <link href="{% static 'css/akis.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ek+Mukta:300,400,600|Open+Sans:400,800" rel="stylesheet">
+{% endblock %}
+{% block icerik %}
+
+
+<div>
+
+    <br>
+    <div>
+    <main>
+        <h1 class="auto text-dark text-center" style="font-size: 20px;font-family: 'Ek Mukta';">
+            <b>
+                Merhabalar <span class="text-capitalize">{{user.first_name}}</span>,
+            dilediğin konuyu seçerek hemen ilgili makalelere ulaşabilirsin.
+            </b>
+        </h1>
+    </main>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group text-center">
+            <select id="{{ form.ders.id_for_label }}" style="font-family: 'Ek Mukta';" name="{{ form.ders.html_name }}" class="form-control text-black">
+              {% for ders in dersler %}
+              <option class="bg-black text-white" value="{{ ders.id }}" style="font-family: 'Ek Mukta';">{{ ders.name }}</option>
+              {% endfor %}
+             </select>
+            <br>
+            <br>
+        <input type="submit" class="btn btn-primary bg-dark btn-outline-light" value="Seçili konuyla alakalı makaleleri getir.">
+
+        </div>
+    </form>
+
+
+    </div>
+
+</div>
+{% block footer %}
+{% endblock %}
+{% endblock %}

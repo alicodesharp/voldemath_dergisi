@@ -1,0 +1,141 @@
+{% extends 'Giris_Yaptiktan_Sonra/Takip_Ettigim_Akis.html' %}
+{% load static %}
+{% block title %}
+    <title>Profilim</title>
+{% endblock %}
+{% block style %}
+/* Profile container */
+.profile {
+  margin: 20px 0;
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+  padding: 20px 0 10px 0;
+  background: #fff;
+}
+
+.profile-userpic img {
+  float: none;
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  border-radius: 50% !important;
+}
+
+.profile-usertitle {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-usertitle-name {
+  color: #5a7391;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.profile-usertitle-job {
+  text-transform: uppercase;
+  color: #5b9bd1;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.profile-userbuttons {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.profile-userbuttons .btn {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 15px;
+  margin-right: 5px;
+}
+
+.profile-userbuttons .btn:last-child {
+  margin-right: 0px;
+}
+
+.profile-usermenu {
+  margin-top: 30px;
+}
+
+.profile-usermenu ul li {
+  border-bottom: 1px solid #f0f4f7;
+}
+
+.profile-usermenu ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li a {
+  color: #93a3b5;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.profile-usermenu ul li a i {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.profile-usermenu ul li a:hover {
+  background-color: #fafcfd;
+  color: #5b9bd1;
+}
+
+.profile-usermenu ul li.active {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li.active a {
+  color: #5b9bd1;
+  background-color: #f6f9fb;
+  border-left: 2px solid #5b9bd1;
+  margin-left: -2px;
+}
+
+/* Profile Content */
+.profile-content {
+  padding: 20px;
+  background: #fff;
+  min-height: 460px;
+}
+{% endblock %}
+{% block icerik %}
+<div class="container">
+    <div class="row profile">
+		<div class="col-md-12 border-right border-left">
+			<div class="profile-sidebar">
+				<div class="profile-usertitle">
+					<div class="profile-usertitle-name text-capitalize">
+						{{ user.user.first_name }} {{ user.user.last_name }}
+					</div>
+					<div class="profile-usertitle-job">
+						{% if user.user.isAdmin %}Site admini{% elif user.user.Makale_paylasabilir_mi or user.user.Normal_paylasim_yapabilir_mi %}Paylaşımcı{% else %}Normal Kullanıcı{% endif %}
+					</div>
+                    <hr>
+                    <div class="text-center profile-usertitle-name">
+                        Kullanıcı adı: <span class="profile-usertitle-job">{{ user.user.username }}</span><br>
+                        Email: <span class="profile-usertitle-job">{{ user.user.email }}</span><br>
+                        Makale paylaşımı yapabiliyor musun? <span class="profile-usertitle-job">{% if user.user.Makale_paylasabilir_mi %}Evet{% else %}Hayır
+                        {% if not user.user.daha_once_makaleci_istegi_yapti_mi %}<a href="/yeniMakaleci/14504169u{{ user.user.id }}">(Makale paylaşabilmek için istek gönder)</a>{% else %}(İsteğin Gönderildi){% endif %}{% endif %}</span><br>
+                        Normal paylaşım yapabiliyor musun? <span class="profile-usertitle-job">{% if user.user.Normal_paylasim_yapabilir_mi %}Evet{% else %}Hayır
+                        {% if not user.user.daha_once_paylasimci_istegi_yapti_mi %}<a href="/yeniPaylasimci/14504169u{{ user.user.id }}">(Normal paylaşımlarda bulunabilmek için istek gönder)</a>{% else %}(İsteğin Gönderildi){% endif %}{% endif %}</span><br>
+
+                    </div>
+				</div>
+
+				<!-- END MENU -->
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}

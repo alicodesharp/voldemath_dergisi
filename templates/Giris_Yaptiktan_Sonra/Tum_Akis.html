@@ -1,0 +1,66 @@
+{% extends 'Giris_Yaptiktan_Sonra/Takip_Ettigim_Akis.html' %}
+{% load static %}
+{% block title %}
+<title>Paylaşılan Makaleler · Voldemath</title>
+{% endblock %}
+{% block icerik %}
+<main role="main" class="container">
+  <div style="background-color: #1A2D34" class="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm">
+    <img class="mr-3" src="{% static 'images/IMG_7601.JPG' %}" alt="" width="48" height="48">
+    <div class="lh-100 font-headers-2">
+      <h6 class="mb-0 text-white lh-100">Voldemath</h6>
+      <small>Yayınlanan Tüm Makaleler</small>
+    </div>
+  </div>
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Yayınlandığımız makaleler</h6>
+    {% for makale in Makalelerimiz %}
+            {% if makale.makale_yayinlanmis_mi %}
+                <div class="media text-muted pt-3">
+                  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray font-headers-4">
+                    <strong class="d-block"><a class="vm-tcolors-darkgreen-2" href="/makaleler/{{ makale.id }}">{{ makale.makale_baslik }}</a> <span class="text-dark">·</span> {{ makale.yazar }} <span class="text-danger">·</span> {{ makale.tarih }}   </strong>
+                      <br>
+                    {{makale.text}}
+                      <br>
+                      <div class="text-right"><a class="vm-tcolors-brown-1"  href="../uploads/{{ makale.dosya }}"><small>pdf:</small> <i class="fas fa-file-pdf"></i></a></div>
+                  </p>
+                </div>
+            {% endif %}
+    {% endfor %}
+    {% if Makalelerimiz.has_previous %}
+        <small class="d-block text-left mt-3">
+          <a href="{% if Makalelerimiz.has_previous %}?sayfa= {{ Makalelerimiz.previous_page_number }}{% endif %}">Önceki sayfa</a><!-- previous_page_number djangodan gelen bir özellik -->
+        </small>
+    {% endif %}
+    {% if Makalelerimiz.has_next %}
+        <small class="d-block text-right mt-3">
+          <a href="{% if Makalelerimiz.has_next %}?sayfa={{ Makalelerimiz.next_page_number }}{% endif %}">Sonraki sayfa</a>
+        </small>
+    {% endif %}
+    <small class="text-center"><b><p> Şuanki sayfanız : {{ Makalelerimiz.number }} |
+                    Toplam sayfa sayısı : {{ Makalelerimiz.paginator.num_pages }} </p></b>
+    </small>
+  </div>
+
+  {% if rastgeleKonular %}
+  <hr class="font-weight-bold" color="green">
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Konu Önerilerimiz</h6>
+    {% for konu in rastgeleKonular %}
+    <div class="media text-muted pt-3">
+      <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <strong class="">{{ konu.konu_adi }}</strong>
+
+          <a href="/follow/{{ konu.id }}">{% if ders not in user.user.follows.all %}Takip Et {% else%} Takibi Bırak {% endif %}</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <small class="d-block text-right mt-3">
+      <a href="/konu_listesi/">Tüm konular</a>
+    </small>
+  </div>
+  {% endif %}
+</main>
+{% endblock %}

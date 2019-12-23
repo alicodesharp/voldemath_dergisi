@@ -1,0 +1,27 @@
+{% extends 'Giris_Yaptiktan_Sonra/Takip_Ettigim_Akis.html' %}
+{% load static %}
+{% block title %}<title>Arama Sonuçları · Voldemath</title>{% endblock %}
+{% block icerik %}
+<main role="main" class="container">
+  <div style="background-color: #1A2D34" class="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm">
+    <img class="mr-3" src="{% static 'images/IMG_7601.JPG' %}" alt="" width="48" height="48">
+    <div class="lh-100 font-headers-2">
+      <h6 class="mb-0 text-white lh-100">Voldemath</h6>
+      <small>Arama sonuçları</small>
+      <p class="small"><span class="text-success">Aratılan kelime: {{ aratilan_kelime }}</p>
+    </div>
+  </div>
+
+
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Aratılan kelimenin bulunması ihtimal olan makale başlıkları</h6>
+    {% for sonuc in data %}
+                <div class="media text-muted pt-3">
+                  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray font-headers-4">
+                    <strong class="d-block"><a class="vm-tcolors-blue-1" href="/makaleler/{{ sonuc.id }}">{{ sonuc.makale_baslik }}</a> <span class="text-dark">·</span> {{ sonuc.makale_yazar }} <span class="text-danger">·</span> {{ sonuc.makale_yukleme_tarihi }}   </strong>
+                  </p>
+                </div>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}

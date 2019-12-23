@@ -1,0 +1,42 @@
+{% extends 'Giris_Yaptiktan_Sonra/Takip_Ettigim_Akis.html' %}
+{% load static %}
+{% block title %}
+    <title>Duyurular · Voldemath</title>
+{% endblock %}
+{% block icerik %}
+<main role="main" class="container">
+  <div style="background-color: #1A2D34" class="align-items-center p-3 my-3 text-white-50 rounded shadow-sm">
+    <div class="lh-100 font-headers-2">
+      <h6 class="mb-0 text-white text-center lh-100">Voldemath ·· Duyurular</h6>
+    </div>
+  </div>
+
+
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Son duyurular</h6>
+    {% for duyuru in duyurular %}
+                <div class="media pt-3">
+                  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray font-headers-4">
+                    <strong class="d-block text-black">{{ duyuru.baslik }} <span class="text-black">·</span> {{ duyuru.duyuru_tarih }}</strong>
+                      <br>
+                    {{duyuru.text}}
+                  </p>
+                </div>
+    {% endfor %}
+    {% if Makalelerimiz.has_previous %}
+        <small class="d-block text-left mt-3">
+          <a href="{% if duyurular.has_previous %}?sayfa= {{ duyurular.previous_page_number }}{% endif %}">Önceki sayfa</a><!-- previous_page_number djangodan gelen bir özellik -->
+        </small>
+    {% endif %}
+    {% if Makalelerimiz.has_next %}
+        <small class="d-block text-right mt-3">
+          <a href="{% if duyurular.has_next %}?sayfa={{ duyurular.next_page_number }}{% endif %}">Sonraki sayfa</a>
+        </small>
+    {% endif %}
+    <small class="text-center"><b><p> Şuanki sayfanız : {{ duyurular.number }} |
+                    Toplam sayfa sayısı : {{ duyurular.paginator.num_pages }} </p></b>
+    </small>
+
+  </div>
+</main>
+{% endblock %}

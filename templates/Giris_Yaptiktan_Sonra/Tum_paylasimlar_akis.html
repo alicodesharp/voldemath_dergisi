@@ -1,0 +1,47 @@
+{% extends 'Giris_Yaptiktan_Sonra/Takip_Ettigim_Akis.html' %}
+{% load static %}
+{% block title %}
+<title>Tüm Normal Paylaşımlar · Voldemath</title>
+{% endblock %}
+{% block icerik %}
+<main role="main" class="container">
+  <div style="background-color: #1A2D34" class="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm">
+    <img class="mr-3" src="{% static 'images/IMG_7601.JPG' %}" alt="" width="48" height="48">
+    <div class="lh-100 font-headers-2">
+      <h6 class="mb-0 text-white lh-100">Voldemath</h6>
+    </div>
+  </div>
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Tüm Normal Paylaşımlar</h6>
+    {% for paylasim in Paylasimlar %}
+    <div class="media text-muted pt-3">
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+      <strong class="d-block text-dark">{{ paylasim.yazar }} <span class="text-dark">·</span> {{ paylasim.tarih }} <span class="text-dark">·</span>  Konu: {{ paylasim.makale_konu }} </strong>
+          {{ paylasim.text }} <br>
+          {% if paylasim.dosya_turu == "Resim" %}
+              <br>
+              <span style="overflow-x:scroll;overflow-y:scroll; text-align: center"><img src="../uploads/{{ paylasim.dosya }}" width="1080" height="480" class="text-center phonequit"></span>
+              <a class="phonein" href="../uploads/{{ paylasim.dosya }}">{{ paylasim.dosya }}</a>
+              <br>
+          {% else %}
+          <a href="../uploads/{{ paylasim.dosya }}">{{ paylasim.dosya }}</a>
+          {% endif %}
+      </p>
+    </div>
+    {% endfor %}
+    {% if Paylasimlar.has_previous %}
+        <small class="d-block text-left mt-3">
+          <a href="{% if Paylasimlar.has_previous %}?sayfa= {{ Paylasimlar.previous_page_number }}{% endif %}">Önceki sayfa</a><!-- previous_page_number djangodan gelen bir özellik -->
+        </small>
+    {% endif %}
+    {% if Paylasimlar.has_next %}
+        <small class="d-block text-right mt-3">
+          <a href="{% if Paylasimlar.has_next %}?sayfa={{ Paylasimlar.next_page_number }}{% endif %}">Sonraki sayfa</a>
+        </small>
+    {% endif %}
+    <small class="text-center"><b><p> Şuanki sayfanız : {{ Paylasimlar.number }} |
+                    Toplam sayfa sayısı : {{ Paylasimlar.paginator.num_pages }} </p></b>
+    </small>
+  </div>
+</main>
+{% endblock %}

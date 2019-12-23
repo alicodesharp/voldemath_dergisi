@@ -1,0 +1,113 @@
+* {
+    box-sizing: border-box;
+}
+html, body {
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    color : #343538;
+
+}
+.column {
+    float: left;
+    padding: 10px;
+    min-height: 100%;
+    overflow: hidden;
+    margin-bottom : -9999px;
+    padding-bottom: 9999px;
+.centered {
+    text-align: center;
+
+}
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+
+}
+.ustsatir {
+    float: left;
+    text-decoration: none;
+    margin-left: 15%;
+    font-size: 25px;
+
+}
+.ustsatir-isim {
+    float: left;
+    text-decoration: none;
+    margin-left: 1%;
+    font-size: 20px;
+
+}
+
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 100000;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+.title{
+    display: inline;
+}
+
+.kolon-basligi{
+    text-align: center;
+
+    margin-top: 0px;
+
+}
+
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+}
+
+li a {
+    display: block;
+
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color on hover */
+li a:hover {
+    background-color: #555;
+
+}
+
+.gonderi {
+    border: 1px solid;
+    background-color: white;
+}
+.centered {
+    text-align: center;
+}
+
+.gonderitext {
+    margin-left: 1%;
+}
+.dersler{
+    background-color: white;
+    font-family: calibri;
+    border: 1px double red;
+}
+.dersadi{
+    font-family: calibri;
+    font-size: 15px;
+    text-decoration: none;
+    color: brown;
+}
+.bordered-red{
+    border: 1px solid red;
+}
+.bordered-teal{
+    border: 1px solid #3ac;
+}

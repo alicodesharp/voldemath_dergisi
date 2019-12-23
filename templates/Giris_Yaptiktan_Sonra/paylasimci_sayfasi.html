@@ -1,0 +1,70 @@
+{% extends 'Giris_Yaptiktan_Sonra/Takip_Ettigim_Akis.html' %}
+{% load static %}
+{% block title %}
+    <title>{{ user.user.first_name }} {{ user.user.last_name }} Paylaşımları</title>
+{% endblock %}
+{% block icerik %}
+<main role="main" class="container">
+  <div style="background-color: #1A2D34" class="align-items-center p-3 my-3 text-white-50 rounded shadow-sm">
+    <div class="lh-100 font-headers-2">
+      <h6 class="mb-0 text-white text-center lh-100">Voldemath ·· Özel Akış</h6>
+    </div>
+  </div>
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">{{ user.user.first_name }} {{ user.user.last_name }} isimli kullanıcının paylaştığı makaleler</h6>
+    {% for makale in Tum_makaleler %}
+            {% if makale.makale_yayinlanmis_mi %}
+                <div class="media text-muted pt-3">
+                  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray font-headers-4">
+                    <strong class="d-block"><a class="vm-tcolors-darkgreen-2" href="/makaleler/{{ makale.id }}">{{ makale.makale_baslik }}</a> <span class="text-dark">·</span> {{ makale.yazar }} <span class="text-danger">·</span> {{ makale.tarih }}   </strong>
+                      <br>
+                    {{makale.text}}
+                      <br>
+                      <div class="text-right"><a class="vm-tcolors-brown-1"  href="../uploads/{{ makale.dosya }}"><small>pdf:</small> <i class="fas fa-file-pdf"></i></a></div>
+                  </p>
+                </div>
+            {% endif %}
+    {% endfor %}
+  </div>
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">{{ user.user.first_name }} {{ user.user.last_name }} isimli kullanıcının normal paylaşımları</h6>
+    {% for paylasim in Tum_paylasimlar %}
+    <div class="media text-muted pt-3">
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+      <strong class="d-block text-dark">{{ paylasim.yazar }} <span class="text-dark">·</span> {{ paylasim.tarih }} <span class="text-dark">·</span>  Konu: {{ paylasim.makale_konu }} </strong>
+          {{ paylasim.text }} <br>
+          {% if paylasim.dosya_turu == "Resim" %}
+              <br>
+              <span style="overflow-x:scroll;overflow-y:scroll; text-align: center"><img src="../uploads/{{ paylasim.dosya }}" width="1080" height="480" class="text-center phonequit"></span>
+              <a class="phonein" href="../uploads/{{ paylasim.dosya }}">{{ paylasim.dosya }}</a>
+              <br>
+          {% else %}
+          <a href="../uploads/{{ paylasim.dosya }}">{{ paylasim.dosya }}</a>
+          {% endif %}
+      </p>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if rastgeleKonular %}
+  <hr class="font-weight-bold" color="green">
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Konu Önerilerimiz</h6>
+    {% for konu in rastgeleKonular %}
+    <div class="media text-muted pt-3">
+      <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <strong class="">{{ konu.konu_adi }}</strong>
+
+          <a href="/follow/{{ konu.id }}">{% if ders not in user.user.follows.all %}Takip Et {% else%} Takibi Bırak {% endif %}</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <small class="d-block text-right mt-3">
+      <a href="/konu_listesi/">Tüm konular</a>
+    </small>
+  </div>
+  {% endif %}
+</main>
+{% endblock %}

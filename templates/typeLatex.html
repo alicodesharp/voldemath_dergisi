@@ -1,0 +1,27 @@
+{% load latexify %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Type Math</title>
+    {% include 'latexify/stylesheets.html' %}
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" value="Check">{{btn}}</button>
+    </form>
+
+
+    {% latexify context_arg %}
+    {% latexify context_arg parse_math=True %}
+    <span class="django-latexify math inline">{{text}}</span>
+    {% latexify 'c = \pm\sqrt{a^2 + b^2}' math_block=True %}
+
+
+
+    {% include "latexify/scripts.html" %}
+</body>
+</html>

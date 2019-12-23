@@ -1,0 +1,43 @@
+{% extends 'Giris_Yaptiktan_Sonra/Takip_Ettigim_Akis.html' %}
+{% load static %}
+{% block title %}
+    <title>Tüm Paylaşımcılar Listesi</title>
+{% endblock %}
+{% block icerik %}
+<main role="main" class="container">
+      <div style="background-color: #ffffff" class="align-items-center p-3 my-3 text-white-50 rounded shadow-sm">
+
+        <div class="lh-100 font-headers-2 text-dark">
+          <h4 class="mb-0 text-dark lh-100 text-center">Paylaşım yapabilen kullanıcılarımız</h4>
+            <hr color="green">
+            <br>
+            {% for paylasimci in Paylasimcilar %}
+                <div class="media font-headers-2 pt-3 text-left">
+                <p class="text-capitalize media-body pb-3 mb-0 small lh-125 border-bottom {% if ders not in user.user.follows.all %}{% else %}border-danger{% endif %}">
+                {{paylasimci.first_name}} {{ paylasimci.last_name }}</p>
+                <p class="small"><a class="vm-tcolors-darkgreen-2" href="/paylasimci/{{ paylasimci.id }}">Paylaşımlarını gör</a> </p>
+                </div>
+
+          {% endfor %}
+        <br>
+        <br>
+        {% if Paylasimcilar.has_previous %}
+            <small class="d-block text-left mt-3">
+              <a href="{% if Paylasimcilar.has_previous %}?sayfa= {{ Paylasimcilar.previous_page_number }}{% endif %}">Önceki sayfa</a><!-- previous_page_number djangodan gelen bir özellik -->
+            </small>
+        {% endif %}
+        {% if Paylasimcilar.has_next %}
+            <small class="d-block text-right mt-3">
+              <a href="{% if Paylasimcilar.has_next %}?sayfa={{ Paylasimcilar.next_page_number }}{% endif %}">Sonraki sayfa</a>
+            </small>
+        {% endif %}
+        <small class="text-center"><b><p> Şuanki sayfanız : {{ Paylasimcilar.number }} |
+                        Toplam sayfa sayısı : {{ Paylasimcilar.paginator.num_pages }} </p></b>
+        </small>
+        </div>
+
+      </div>
+      <p class="small text-left text-dark" >Voldemath'a üye olmuş toplam kullanıcı sayımız: {{ Kullanici_Adet }}<br>
+        Voldemath'da paylaşım yapabilen kullanıcı sayımız: {{ Paylasimci_Adet }}</p>
+    </main>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'Çöp Olması Gereken Templateler/karsilama.html' %}
+{% load static %}
+{% block title %}Change Your Password{%endblock%}
+{% block icerik %}
+<div style="margin-top: 1em;">
+    <form method="post">
+      {% csrf_token %}
+      <h3 class="cover-heading text-dark">Change your password</h3>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+      <label for="{{ form.yeni_sifre.id_for_label }}" class="sr-only">{{ form.yeni_sifre.label }}</label>
+      <input type="password" id="{{ form.yeni_sifre.id_for_label }}" name="{{ form.yeni_sifre.html_name }}"
+             style="width: 200px; font-family : calibri;" class="colx" placeholder="{{ form.yeni_sifre.label }}" required>
+
+        <br>
+        <br>
+      <button type="submit" class="btn bg-success"
+              style="font-family: calibri; background-color: #1c313a; color: #ffffff;">Send Request</button>
+      <br>
+      <br>
+      {% if error %}
+      <h6 class="cover-heading text-alert alert">{{ error }}</h6>
+      {% endif %}
+    </form>
+
+</div>
+{% endblock %}

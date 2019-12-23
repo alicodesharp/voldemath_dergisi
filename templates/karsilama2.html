@@ -1,0 +1,311 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+	<title>{% block title %}Voldemath | Matematik Dergisi{% endblock %}</title>
+
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Google font (font-family: 'Open Sans', sans-serif;) -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300i,400,400i,700,800" rel="stylesheet">
+	<!-- Google font (font-family: 'Poppins', sans-serif;) -->
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700" rel="stylesheet">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/plugins.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/voldemath.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Big+Shoulders+Text|Liu+Jian+Mao+Cao|Muli|Open+Sans+Condensed:300|Roboto+Condensed|Work+Sans&display=swap" rel="stylesheet">
+
+
+	<!-- Custom css -->
+	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+	<!-- Modernizer js -->
+	<script src="{% static 'js/modernizr-3.5.0.min.js' %}"></script>
+</head>
+
+<body>
+
+	<div class="wrapper" id="wrapper">
+
+		<!-- Header Area -->
+        {% block header %}
+		<header id="header" class="header header-transparent sticky-header cr-border-bottom">
+			<div class="container d-none d-lg-block">
+				<div class="header-inner">
+					<a href="/" class="logo">
+                        <h3 class="font-headers-4 text-light">Voldemath</h3>
+					</a>
+					<nav class="mainmenu">
+						<ul>
+                            {% if user.is_authenticated %}
+							<li class="cr-dropdown">
+								<a href="index.html">Tüm Makaleler</a>
+							</li>
+							<li class="cr-dropdown">
+								<a href="index.html">Takip Ettiğim Makaleler</a>
+							</li>
+							<li class="cr-dropdown">
+								<a href="about-us.html">Yayımlanmış Makale Konuları</a>
+							</li>
+							<li class="cr-dropdown">
+								<a href="portfolio-gallery.html">Duyurular</a>
+							</li>
+                                {% if user.user.isAdmin or user.user.isOfficer or user.user.Makale_paylasabilir_mi %}
+                            <li class="cr-dropdown">
+								<a href="/makale_paylasim/" style="color: darkblue">Makale Paylaş</a>
+							</li>
+                                    {% endif %}
+                            {% endif %}
+                            <li class="cr-dropdown">
+                                {% if not user.is_authenticated %}
+								<a style="font-size: 26px;" href="/giris/"><i class="fas fa-user"></i></a>
+                                {% else %}
+                                <a href="/cikis/">Çıkış yap</a>
+                                {% endif %}
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<div class="mobile-menu-wrap d-block d-lg-none">
+				<div class="container">
+					<div class="mobile-menu">
+						<a href="/" class="mobile-logo">
+							<h4 class="font-headers-4 text-dark">Voldemath</h4>
+						</a>
+					</div>
+				</div>
+			</div>
+		</header>
+        {% endblock %}
+		<!--// Header Area -->
+        {%  block banner %}
+		<div class="banner-area">
+
+			<!-- Single Banner -->
+			<div style="background-image: url('{% static 'images/bg4.jpg' %}');background-repeat: no-repeat;background-size: cover;
+  background-position: center center;" class="banner fullscreen jarallax"
+                 data-black-overlay="7" data-speed="0.5">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 offset-lg-2 col-md-12 offset-lg-1 col-12 offset-0">
+							<div class="banner-content text-center jarallax cr-tilter">
+                                {% if messages %}
+                                {% for message in messages %}
+                                <p class="text-danger">{{message}}</p>
+                                {% endfor %}
+                                {% endif %}
+								<h2>Galatasaray Üniversitesi <br> Matematik Dergisi</h2>
+								<p>Voldemath'a Hoşgeldin!</p>
+								<a href="/giris/" class="cr-btn cr-btn-white">
+									<span>Giriş Yap</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="particles-js" class="particles-js"></div>
+
+			</div>
+			<!--// Single Banner -->
+
+		</div>
+        {%  endblock %}
+        {% block icerik %}
+		<main class="page-content">
+			<section class="cr-section portfolio-area bg-white section-padding-lg">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-6 offset-lg-3">
+							<div class="section-title text-center">
+								<h2>En son yayınladığımız makale ve dergiler</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<!-- Poftfolio Filters -->
+						<div class="portfolio-filters text-center">
+							<button class="is-checked" data-filter="*">Tümü</button>
+                            {% for filter in portfolioFilters %}
+                                {% if not filter.makale_yayinlanmis_mi %}
+                            <button data-filter=".pfolio-filter-{{ filter.tag }}">{{ filter.makale.makale_konu }}</button>
+                                {%  endif  %}
+                            {% endfor %}
+						</div>
+						<!--// Poftfolio Filters -->
+					</div>
+				</div>
+
+				<!-- Portfolios -->
+				<div class="row no-gutters portfolios mt-5">
+
+					<!-- Single Portfolio -->
+                    {% for makale in Makalelerimiz %}
+                        {% if makale.makale.makale_yayinlanmis_mi %}
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 portfolio-single pfolio-filter-branding pfolio-filter-{{ makale.tag }}">
+                                <div class="portfolio">
+                                    <div class="portfolio-thumb">
+                                        <img width="480" height="500" src="../uploads/{{ makale.makale.makale_arkaplan_resmi }}" alt="portfolio thumb">
+                                    </div>
+                                    <div class="portfolio-content text-center">
+                                        <div class="portfolio-content-inner">
+                                            <h4>
+                                                <a href="/makaleler/{{ makale.makale.id }}">{{ makale.makale.makale_baslik }}</a>
+                                            </h4>
+                                            <h6>Yayınlayan: {{ makale.makale.makale_yazar }}</h6>
+                                            <h6>Yayın tarihi: {{ makale.makale.makale_yukleme_tarihi }}</h6>
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {%  endfor %}
+
+				</div>
+
+			</section>
+
+
+			<!--// Blog Area -->
+
+		</main>
+        {% endblock %}
+		<!--// Start Page Content -->
+
+		<!-- Footer Area -->
+		<footer class="footer-area">
+            {%  block footer %}
+			<!-- Footer Widgets Area -->
+			<div class="bg-footer-1 jarallax section-padding-xs" data-black-overlay="7">
+				<div class="container">
+					<div class="row widgets footer-widgets">
+
+						<!-- Single Widget -->
+						<div class="col-lg-4 col-md-4">
+							<!-- Widget About -->
+							<div class="single-widget about-widget">
+								<h4 class="widget-title">İletişim</h4>
+								<ul>
+									<li>
+
+										<p><i class="fa fa-map-marker"></i> Adres : Galatasaray Üniversitesi, İstanbul, Ortaköy</p>
+									</li>
+
+									<li>
+										<i class="fa fa-envelope"></i>
+										<p>Email :
+											<a href="mailto://username@email.com">username@email.com</a>,</p>
+									</li>
+									<li>
+										<div class="social-icons">
+											<ul>
+												<li class="facebook">
+													<a href="#">
+														<i class="fab fa-facebook-square"></i>
+													</a>
+												</li>
+												<li class="twitter">
+													<a href="#">
+														<i class="fab fa-twitter-square"></i>
+													</a>
+												</li>
+												<li class="instagram">
+													<a href="#">
+														<i class="fab fa-instagram"></i>
+													</a>
+												</li>
+												<li class="linkedin">
+													<a href="#">
+														<i class="fab fa-linkedin"></i>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<!--// Widget About -->
+						</div>
+						<!--// Single Widget -->
+
+						<!-- Single Widget -->
+						<div class="col-lg-4 col-md-4">
+							<!-- Widget Links -->
+							<div class="single-widget links-widget">
+								<h4 class="widget-title">Faydalı olabilecek linkler</h4>
+								<ul>
+									<li>
+										<a href="https://gsu.edu.tr/"><i class="fas fa-university text-dark"></i> Galatasaray Üniversitesi Web Sitesi</a>
+									</li>
+									<li>
+										<a href="https://math.gsu.edu.tr/"><i class="fas fa-square-root-alt text-dark"></i> GSÜ Matematik Web Sitesi</a>
+									</li>
+									<li>
+										<a href="https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw"><i class="text-dark fab fa-youtube"></i>3blue1brown Youtube Kanalı</a>
+									</li>
+								</ul>
+							</div>
+							<!--// Widget Links -->
+						</div>
+                        <div class="col-lg-4 col-md-4">
+							<!-- Widget Links -->
+							<div class="single-widget links-widget">
+								<h4 class="widget-title">Faydalı olabilecek linkler</h4>
+								<ul>
+									<li>
+										<a href="/about_gsumath/"><i class="fas fa-university text-dark"></i> Dergimiz</a>
+									</li>
+									<li>
+										<a href="//"><i class="fas fa-square-root-alt text-dark"></i> Nasıl Başladık?</a>
+									</li>
+								</ul>
+							</div>
+							<!--// Widget Links -->
+						</div>
+						<!--// Single Widget -->
+
+						<!-- Single Widget -->
+
+						<!--// Single Widget -->
+
+
+
+					</div>
+				</div>
+			</div>
+			<!--// Footer Widgets Area -->
+            {% endblock %}
+		</footer>
+		<!--// Footer Area -->
+
+    </div>
+	<!-- //Main wrapper -->
+
+	<!-- JS Files -->
+    <script src="https://kit.fontawesome.com/698648e8fa.js"></script>
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <script src="{% static 'js/active.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="{% static 'js/TweenMax.min.js' %}"></script>
+    <script src="{% static 'js/TimelineMax.min.js' %}"></script>
+    <script src="{% static 'js/myapp.js' %}"></script>
+</body>
+
+</html>
