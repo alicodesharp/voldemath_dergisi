@@ -8,7 +8,8 @@
 
 	<title>{% block title %}Voldemath | Matematik Dergisi{% endblock %}</title>
 
-	<meta name="description" content="">
+	<meta name="description" content="Galatasaray Üniversitesi Matematik Kulübü Dergisi">
+    <link rel="icon" href="{% static 'images/voldemath_icon.png' %}">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- Google font (font-family: 'Open Sans', sans-serif;) -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300i,400,400i,700,800" rel="stylesheet">
@@ -160,7 +161,7 @@
                                     <div class="portfolio-content text-center">
                                         <div class="portfolio-content-inner">
                                             <h4>
-                                                <a href="/makaleler/{{ makale.makale.id }}">{{ makale.makale.makale_baslik }}</a>
+                                                <a href="#">{{ makale.makale.makale_baslik }}</a>
                                             </h4>
                                             <h6>Yayınlayan: {{ makale.makale.makale_yazar }}</h6>
                                             <h6>Yayın tarihi: {{ makale.makale.makale_yukleme_tarihi }}</h6>

@@ -41,7 +41,6 @@ urlpatterns = [
     path(r'yeniMakaleci/14504169u<int:user_id>', yeniMakaleci),
     path(r'kullaniciya_izin_ver/14504169u<int:user_id>', kullaniciya_izin_ver),
     path(r'kullaniciya_makale_izni_ver/14504169u<int:user_id>', kullaniciya_makale_izni_ver),
-    path(r'profil/<int:user_id>', profili_gor),
     path(r'duyurular/', duyurular.as_view()),
     path(r'hesabini_aktif_et/<str:username>', hesabi_aktif_et),
     path(r'tum_paylasimcilar/',Tum_paylasimcilar.as_view()),

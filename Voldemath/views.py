@@ -40,49 +40,56 @@ class Tum_paylasimlar(TemplateView):
         context['Paylasimlar'] = sayfalanmis.get_page(sayfa)
         context['count'] = Makale.objects.filter(makale_yayinlanmis_mi=True).count()
         return context
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(Tum_paylasimlar, self).dispatch(request,*args,**kwargs)
 
 def paylasimci(request,user_id):
     user = User.objects.get(id=user_id)
-    ordered_paylasimlar = Gonderi.objects.filter(yazar=user).order_by("-tarih")
-    ordered_gonderis = Makale.objects.filter(makaleyi_paylasan=user).order_by("-makale_yukleme_tarihi")
-    Paylasimlar = []
-    for paylasim in ordered_paylasimlar:
-        Paylasimlar.append(paylasim)
-
-    Paylasimlar_W_Attr = []
-    for j in range(len(Gonderi.objects.all())):
-        if str(Paylasimlar[j].dosya).endswith(".png") or str(Paylasimlar[j].dosya).endswith(".JPG") or str(
-                Paylasimlar[j].dosya).endswith(".jpeg") or str(Paylasimlar[j].dosya).endswith(".jpg") or str(
-                Paylasimlar[j].dosya).endswith(".gif") or str(Paylasimlar[j].dosya).endswith(".eps") or str(
-                Paylasimlar[j].dosya).endswith(".bmp") or str(Paylasimlar[j].dosya).endswith(".raw") or str(
-                Paylasimlar[j].dosya).endswith(".psd"):
-            Paylasimlar_W_Attr.append(
-                PaylasimClass(Paylasimlar[j].yazar, Paylasimlar[j].text, Paylasimlar[j].dosya, Paylasimlar[j].tarih,
-                              Paylasimlar[j].makale_konu, "Resim"))
-        else:
-            Paylasimlar_W_Attr.append(
-                PaylasimClass(Paylasimlar[j].yazar, Paylasimlar[j].text, Paylasimlar[j].dosya, Paylasimlar[j].tarih,
-                              Paylasimlar[j].makale_konu, "Dosya"))
-    Gonderiler = []
-    for gonderi in ordered_gonderis:
-        Gonderiler.append(gonderi)
-    Gonderiler_W_Attr = []
-    for j in range(len(Makale.objects.all())):
-        if Gonderiler[j].makale_yayinlanmis_mi:
-            Gonderiler_W_Attr.append(
-                GonderiClass(Gonderiler[j].id, Gonderiler[j].makale_yazar, Gonderiler[j].makale_aciklama,
-                             Gonderiler[j].makale_pdf_dosya
-                             , Gonderiler[j].makale_yukleme_tarihi, Gonderiler[j].makale_konu,
-                             Gonderiler[j].makale_anahtar_kelimeler,
-                             Gonderiler[j].makale_yayinlanmis_mi, Gonderiler[j].makale_baslik,
-                             Gonderiler[j].makale_arkaplan_resmi))
-
-    return render(request,"Giris_Yaptiktan_Sonra/paylasimci_sayfasi.html",{
-        'user': user,
-        'Tum_paylasimlar':Paylasimlar_W_Attr,
-        'Tum_makaleler': Gonderiler_W_Attr
-    })
+    if request.user.is_authenticated:
+        ordered_paylasimlar = Gonderi.objects.filter(yazar=user).order_by("-tarih")
+        ordered_gonderis = Makale.objects.filter(makaleyi_paylasan=user).order_by("-makale_yukleme_tarihi")
+        Paylasimlar = []
+        for paylasim in ordered_paylasimlar:
+            Paylasimlar.append(paylasim)
+    
+        Paylasimlar_W_Attr = []
+        for j in range(len(Gonderi.objects.all())):
+            if str(Paylasimlar[j].dosya).endswith(".png") or str(Paylasimlar[j].dosya).endswith(".JPG") or str(
+                    Paylasimlar[j].dosya).endswith(".jpeg") or str(Paylasimlar[j].dosya).endswith(".jpg") or str(
+                    Paylasimlar[j].dosya).endswith(".gif") or str(Paylasimlar[j].dosya).endswith(".eps") or str(
+                    Paylasimlar[j].dosya).endswith(".bmp") or str(Paylasimlar[j].dosya).endswith(".raw") or str(
+                    Paylasimlar[j].dosya).endswith(".psd"):
+                Paylasimlar_W_Attr.append(
+                    PaylasimClass(Paylasimlar[j].yazar, Paylasimlar[j].text, Paylasimlar[j].dosya, Paylasimlar[j].tarih,
+                                  Paylasimlar[j].makale_konu, "Resim"))
+            else:
+                Paylasimlar_W_Attr.append(
+                    PaylasimClass(Paylasimlar[j].yazar, Paylasimlar[j].text, Paylasimlar[j].dosya, Paylasimlar[j].tarih,
+                                  Paylasimlar[j].makale_konu, "Dosya"))
+        Gonderiler = []
+        for gonderi in ordered_gonderis:
+            Gonderiler.append(gonderi)
+        Gonderiler_W_Attr = []
+        for j in range(len(Makale.objects.all())):
+            if Gonderiler[j].makale_yayinlanmis_mi:
+                Gonderiler_W_Attr.append(
+                    GonderiClass(Gonderiler[j].id, Gonderiler[j].makale_yazar, Gonderiler[j].makale_aciklama,
+                                 Gonderiler[j].makale_pdf_dosya
+                                 , Gonderiler[j].makale_yukleme_tarihi, Gonderiler[j].makale_konu,
+                                 Gonderiler[j].makale_anahtar_kelimeler,
+                                 Gonderiler[j].makale_yayinlanmis_mi, Gonderiler[j].makale_baslik,
+                                 Gonderiler[j].makale_arkaplan_resmi))
+    
+        return render(request,"Giris_Yaptiktan_Sonra/paylasimci_sayfasi.html",{
+            'user': user,
+            'Tum_paylasimlar':Paylasimlar_W_Attr,
+            'Tum_makaleler': Gonderiler_W_Attr
+        })
+    else:
+        return redirect("/giris/")
 
 
 
@@ -93,6 +100,11 @@ class Profilim(TemplateView):
         context = super(Profilim, self).get_context_data(**kwargs)
         context["count"] = Makale.objects.filter(makale_yayinlanmis_mi=True).count()
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(Profilim, self).dispatch(request,*args,**kwargs)
 
 
 class Tum_paylasimcilar(TemplateView):
@@ -118,7 +130,11 @@ class Tum_paylasimcilar(TemplateView):
         context["Kullanici_Adet"] = kullanici_adet
         context["Paylasimci_Adet"] = len(paylasimcilar)
         return context
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(Tum_paylasimcilar, self).dispatch(request,*args,**kwargs)
 
 class karsilama(TemplateView):
     template_name = 'karsilama2.html'
@@ -228,6 +244,11 @@ class MYFLOW(FormView):
             'data':sonuclar,
             'form': AramaMotoruForm
         })
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(MYFLOW, self).dispatch(request,*args,**kwargs)
 
 
 
@@ -305,8 +326,11 @@ class anasayfa(FormView):
         shuffle(rastGele)
         context["rastgeleKonular"] = rastGele[:3]
         return context  # eğer makale çok uzunsa ve bunu 1 sayfada değil de bölerek göstermek istiyorsak
-
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(anasayfa, self).dispatch(request,*args,**kwargs)
 
 class giris(FormView):
     template_name = 'enter-world.html'
@@ -366,12 +390,15 @@ class dersler(FormView):
 
 def Takip(request,ders_id):
     ders = MakaleKonu.objects.get(id=ders_id)
-    if ders in request.user.user.follows.all():
-        request.user.user.follows.remove(ders)
+    if request.user.is_authenticated:
+        if ders in request.user.user.follows.all():
+            request.user.user.follows.remove(ders)
+        else:
+            request.user.user.follows.add(ders)
+        return redirect(request.META['HTTP_REFERER'])
     else:
-        request.user.user.follows.add(ders)
-    return redirect(request.META['HTTP_REFERER'])
-
+        return redirect("/giris/")
+    
 
 class About_GsuMath(TemplateView):
     template_name = "Giris_Yapmadan_Once/about_gsumath.html"
@@ -397,7 +424,11 @@ class Change_Your_Password(FormView):
             else:
                 messages.error(self.request, "Eski veya yeni şifreleri hatalı girdiniz. Tekrar deneyiniz.")
                 return render("sifre_degistir/")
-
+            
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(Change_Your_Password, self).dispatch(request,*args,**kwargs)
 
 class yeni_paylasim(FormView):
     template_name = "yeni_paylasim.html"
@@ -426,7 +457,10 @@ class yeni_paylasim(FormView):
             )
         return super(yeni_paylasim, self).form_valid(form)
 
-
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.user.is_authenticated:
+            return redirect("/giris/")
+        return super(yeni_paylasim, self).dispatch(request,*args,**kwargs)
 
 class makale_paylasim(FormView):
     template_name = "makale_paylasim.html"
@@ -478,6 +512,11 @@ class makale_paylasim(FormView):
 
     def form_invalid(self, form):
         return super(makale_paylasim, self).form_invalid(form)
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(makale_paylasim, self).dispatch(request,*args,**kwargs)
 
 
 def gonderi_sil(request,gonderi_id):
@@ -492,6 +531,7 @@ class cikis(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         logout(self.request)
         return super(cikis, self).get_redirect_url(*args,**kwargs)
+
 
 class yeniKonu(FormView):
     form_class = yeniKonuForm
@@ -511,7 +551,11 @@ class yeniKonu(FormView):
             ders_text= "Konu hk. bilgi..."
         )
         return super(yeniKonu, self).form_valid(form)
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(yeniKonu, self).dispatch(request,*args,**kwargs)    
 
 class yeniMakaleKonu(FormView):
     form_class = yeniMakaleKonuForm
@@ -523,7 +567,11 @@ class yeniMakaleKonu(FormView):
             konu_adi=form.cleaned_data["konuname"],
         )
         return super(yeniMakaleKonu, self).form_valid(form)
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.user.is_authenticated:
+            return redirect("/giris/")
+        return super(yeniMakaleKonu, self).dispatch(request,*args,**kwargs)
 
 
 def yeniPaylasimci(request, user_id):
@@ -538,22 +586,24 @@ def yeniPaylasimci(request, user_id):
     print(adminlerin_email_adresleri)
     print(link)
     print(profil_link)
-
-    if not istek_yollayan_kullanici.daha_once_paylasimci_istegi_yapti_mi:
-        send_mail("Voldemath'da yeni bir paylaşımcı isteği var","Merhaba "+ str(istek_yollayan_kullanici.first_name) + ' ' + str(
-            istek_yollayan_kullanici.last_name)+ ' adlı kullanıcı senden paylaşım yapabilmek için izin istiyor.'
-                                                 'Eğer kullanıcının paylaşım yapabilmesini istiyorsan aşağıdaki linke tıklayabilirsin. \n'
-                                                 'İzin vermek için link: '+str(link),str(istek_yollayan_kullanici.email),adminlerin_email_adresleri,fail_silently=False)
-        istek = User.objects.get(id=user_id)
-        istek.daha_once_paylasimci_istegi_yapti_mi = True
-        istek.save()
-        print(istek_yollayan_kullanici.daha_once_paylasimci_istegi_yapti_mi)
-        messages.success(request, "Paylaşım gönderebilmen için gerekli izin adminlerimizden istendi. Kabul edildiği takdirde size bir e-mail gönderilecektir. Sabrınız ve ilginiz için teşekkür ederiz.")
-        return redirect("/yeni_paylasim/")
+    if request.user.is_authenticated:
+        if not istek_yollayan_kullanici.daha_once_paylasimci_istegi_yapti_mi:
+            send_mail("Voldemath'da yeni bir paylaşımcı isteği var","Merhaba "+ str(istek_yollayan_kullanici.first_name) + ' ' + str(
+                istek_yollayan_kullanici.last_name)+ ' adlı kullanıcı senden paylaşım yapabilmek için izin istiyor.'
+                                                     'Eğer kullanıcının paylaşım yapabilmesini istiyorsan aşağıdaki linke tıklayabilirsin. \n'
+                                                     'İzin vermek için link: '+str(link),str(istek_yollayan_kullanici.email),adminlerin_email_adresleri,fail_silently=False)
+            istek = User.objects.get(id=user_id)
+            istek.daha_once_paylasimci_istegi_yapti_mi = True
+            istek.save()
+            print(istek_yollayan_kullanici.daha_once_paylasimci_istegi_yapti_mi)
+            messages.success(request, "Paylaşım gönderebilmen için gerekli izin adminlerimizden istendi. Kabul edildiği takdirde size bir e-mail gönderilecektir. Sabrınız ve ilginiz için teşekkür ederiz.")
+            return redirect("/yeni_paylasim/")
+        else:
+            messages.error(request, "İsteğin bize daha önce ulaştı. En kısa sürede adminlerimiz kontrol edip onaylayacaklardır. Sabrınız ve ilginiz için teşekkür ederiz.")
+            return redirect("/yeni_paylasim/")
     else:
-        messages.error(request, "İsteğin bize daha önce ulaştı. En kısa sürede adminlerimiz kontrol edip onaylayacaklardır. Sabrınız ve ilginiz için teşekkür ederiz.")
-        return redirect("/yeni_paylasim/")
-
+        return redirect("/giris/")
+    
 def yeniMakaleci(request,user_id):
     istek_yollayan_kullanici = User.objects.get(id=user_id)
     adminlerin_email_adresleri = []
@@ -566,45 +616,50 @@ def yeniMakaleci(request,user_id):
     print(adminlerin_email_adresleri)
     print(link)
     print(profil_link)
-
-    if not istek_yollayan_kullanici.daha_once_makaleci_istegi_yapti_mi:
-        send_mail("Voldemath'da yeni bir makaleci isteği var",
-                  "Merhaba " + str(istek_yollayan_kullanici.first_name) + ' ' + str(
-                      istek_yollayan_kullanici.last_name) + ' adlı kullanıcı senden yeni makaleler paylaşabilmek için izin istiyor.'
-                                                            'Eğer kullanıcının paylaşım yapabilmesini istiyorsan aşağıdaki linke tıklayabilirsin. \n'
-                                                            'İzin vermek için link: ' + str(
-                      link), str(istek_yollayan_kullanici.email),
-                  adminlerin_email_adresleri, fail_silently=False)
-        istek = User.objects.get(id=user_id)
-        istek.daha_once_makaleci_istegi_yapti_mi = True
-        istek.save()
-        print(istek_yollayan_kullanici.daha_once_paylasimci_istegi_yapti_mi)
-        messages.success(request,
-                         "Makale paylaşımı yapabilmen için gerekli izin adminlerimizden istendi. Kabul edildiği takdirde size bir e-mail gönderilecektir. Sabrınız ve ilginiz için teşekkür ederiz.")
-        return redirect("/makale_paylasim/")
+    if request.user.is_authenticated:
+        if not istek_yollayan_kullanici.daha_once_makaleci_istegi_yapti_mi:
+            send_mail("Voldemath'da yeni bir makaleci isteği var",
+                      "Merhaba " + str(istek_yollayan_kullanici.first_name) + ' ' + str(
+                          istek_yollayan_kullanici.last_name) + ' adlı kullanıcı senden yeni makaleler paylaşabilmek için izin istiyor.'
+                                                                'Eğer kullanıcının paylaşım yapabilmesini istiyorsan aşağıdaki linke tıklayabilirsin. \n'
+                                                                'İzin vermek için link: ' + str(
+                          link), str(istek_yollayan_kullanici.email),
+                      adminlerin_email_adresleri, fail_silently=False)
+            istek = User.objects.get(id=user_id)
+            istek.daha_once_makaleci_istegi_yapti_mi = True
+            istek.save()
+            print(istek_yollayan_kullanici.daha_once_paylasimci_istegi_yapti_mi)
+            messages.success(request,
+                             "Makale paylaşımı yapabilmen için gerekli izin adminlerimizden istendi. Kabul edildiği takdirde size bir e-mail gönderilecektir. Sabrınız ve ilginiz için teşekkür ederiz.")
+            return redirect("/makale_paylasim/")
+        else:
+            messages.error(request,
+                           "İsteğin bize daha önce ulaştı. En kısa sürede adminlerimiz kontrol edip onaylayacaklardır. Sabrınız ve ilginiz için teşekkür ederiz.")
+            return redirect("/makale_paylasim/")
     else:
-        messages.error(request,
-                       "İsteğin bize daha önce ulaştı. En kısa sürede adminlerimiz kontrol edip onaylayacaklardır. Sabrınız ve ilginiz için teşekkür ederiz.")
-        return redirect("/makale_paylasim/")
+        return redirect("/giris/")
 
 def kullaniciya_izin_ver(request,user_id):
     kullanici = User.objects.get(id=user_id)
-    if request.user.user.isAdmin:
-        kullanici.Normal_paylasim_yapabilir_mi = True
-        kullanici.save()
-        send_mail('Makale paylaşımı izni verildi!',
-                  'Tebrikler, artık Voldemath dergisinde normal paylaşımlarda bulunabilirsin.',
-                  str(request.user.user.email), [str(kullanici.email)], fail_silently=False)
-        messages.success(request,'Başarılı bir şekilde '+ str(kullanici.first_name)+' '+str(kullanici.last_name)+' kullanıcısına paylaşım onayı verilmiştir.')
-        return redirect("/")
+    if request.user.is_authenticated:
+        if request.user.user.isAdmin:
+            kullanici.Normal_paylasim_yapabilir_mi = True
+            kullanici.save()
+            send_mail('Makale paylaşımı izni verildi!',
+                      'Tebrikler, artık Voldemath dergisinde normal paylaşımlarda bulunabilirsin.',
+                      str(request.user.user.email), [str(kullanici.email)], fail_silently=False)
+            messages.success(request,'Başarılı bir şekilde '+ str(kullanici.first_name)+' '+str(kullanici.last_name)+' kullanıcısına paylaşım onayı verilmiştir.')
+            return redirect("/")
+        else:
+            messages.error(request,'Bu yetkiye sahip değilsiniz, ancak adminler kullanıcılara yetki verebilir.')
+            return redirect("/")
     else:
-        messages.error(request,'Bu yetkiye sahip değilsiniz, ancak adminler kullanıcılara yetki verebilir.')
-        return redirect("/")
+        return redirect("/giris/")
 
 
 def kullaniciya_makale_izni_ver(request,user_id):
     kullanici = User.objects.get(id=user_id)
-    if request.user.user.is_authenticated:
+    if request.user.is_authenticated:
         if request.user.user.isAdmin:
             kullanici.Makale_paylasabilir_mi = True
             kullanici.save()
@@ -616,22 +671,6 @@ def kullaniciya_makale_izni_ver(request,user_id):
             messages.error(request, 'Bu yetkiye sahip değilsiniz, ancak adminler kullanıcılara yetki verebilir. Admin hesabınızla giriş yapınız.')
             return redirect("/")
     else:
-        messages.error(request,"Öncelikle admin hesabınıza giriş yapmalısınız.")
-        return redirect("/giris/")
-
-
-def profili_gor(request,user_id):
-    kullanici = User.objects.get(id=user_id)
-    if request.user.user.is_authenticated:
-        if request.user.user.isAdmin:
-            return render(request, "Giris_Yaptiktan_Sonra/Kullanici_Profilleri.html", {
-                'kullanici': kullanici
-            })
-        else:
-            messages.error(request,"Admin hesabınızla giriş yapınız.")
-            return redirect("/cikis/")
-    else:
-        messages.error("İstek iptal edildi. Lütfen admin hesabı ile giriş yapınız.")
         return redirect("/giris/")
 
 
@@ -649,4 +688,9 @@ class duyurular(TemplateView):
         sayfa = self.request.GET.get("sayfa", 1)  # eğer sayfa diye birşey tanımlı değilse, 1 yani ilk sayfayı göster
         context['duyurular'] = sayfalanmis.get_page(sayfa)
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect("/giris/")
+        return super(duyurular, self).dispatch(request,*args,**kwargs)
 
