@@ -399,9 +399,23 @@ def Takip(request,ders_id):
     else:
         return redirect("/giris/")
     
-
-class About_GsuMath(TemplateView):
+import datetime
+class Dergimiz(TemplateView):
     template_name = "Giris_Yapmadan_Once/about_gsumath.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(Dergimiz, self).get_context_data(**kwargs)
+        context["time"] = datetime.datetime.now()
+        return context
+
+
+class Nasil_Basladik(TemplateView):
+    template_name = "Giris_Yapmadan_Once/nasil_basladik.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(Nasil_Basladik, self).get_context_data(**kwargs)
+        context["time"] = datetime.datetime.now()
+        return context
 
 
 class Change_Your_Password(FormView):

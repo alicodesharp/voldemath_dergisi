@@ -23,12 +23,12 @@
                   </p>
                 </div>
     {% endfor %}
-    {% if Makalelerimiz.has_previous %}
+    {% if duyurular.has_previous %}
         <small class="d-block text-left mt-3">
           <a href="{% if duyurular.has_previous %}?sayfa= {{ duyurular.previous_page_number }}{% endif %}">Önceki sayfa</a><!-- previous_page_number djangodan gelen bir özellik -->
         </small>
     {% endif %}
-    {% if Makalelerimiz.has_next %}
+    {% if duyurular.has_next %}
         <small class="d-block text-right mt-3">
           <a href="{% if duyurular.has_next %}?sayfa={{ duyurular.next_page_number }}{% endif %}">Sonraki sayfa</a>
         </small>

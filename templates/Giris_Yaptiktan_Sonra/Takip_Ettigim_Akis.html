@@ -82,7 +82,7 @@
   <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
     <span class="navbar-toggler-icon"></span>
   </button>
-
+  {% block only_signed_in %}
   <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
@@ -116,8 +116,9 @@
 
       {% endif %}
   </div>
+  {% endblock %}
 </nav>
-
+{% block only_signed_in_2 %}
 <div class="nav-scroller bg-white shadow-sm font-headers-4">
   <nav class="nav nav-underline">
     <a class="nav-link active" href="/kendi_akisim/">Takip Ettiğim Makaleler</a>
@@ -135,6 +136,7 @@
     {% endif %}
   </nav>
 </div>
+{% endblock %}
 {% block icerik %}
 <main role="main" class="container">
   <div style="background-color: #1A2D34" class="d-flex align-items-center p-3 my-3 text-white-50 rounded shadow-sm">

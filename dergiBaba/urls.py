@@ -33,7 +33,7 @@ urlpatterns = [
     path(r'yeni_paylasim/', yeni_paylasim.as_view(), name="yeniPaylasim"),
     path(r'makale_paylasim/', makale_paylasim.as_view(), name="makalePaylasim"),
     path(r'cikis/', cikis.as_view(), name='cikis'),
-    path(r'about_gsumath/',About_GsuMath.as_view()),
+    path(r'dergimiz/',Dergimiz.as_view()),
     path(r'sifre_degistir/',Change_Your_Password.as_view()),
     path(r'follow/<int:ders_id>', Takip),
     path(r'-adminsec-/', admin.site.urls),
@@ -47,5 +47,6 @@ urlpatterns = [
     path(r'profilim/',Profilim.as_view()),
     path(r'paylasimci/<int:user_id>',paylasimci),
     path(r'tum_paylasimlar/',Tum_paylasimlar.as_view()),
+    path(r'nasil_basladik/',Nasil_Basladik.as_view())
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)\
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
