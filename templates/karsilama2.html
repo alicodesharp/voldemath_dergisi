@@ -25,7 +25,7 @@
 
 
 	<!-- Custom css -->
-	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/custom.css' %}">z
 
 	<!-- Modernizer js -->
 	<script src="{% static 'js/modernizr-3.5.0.min.js' %}"></script>
@@ -161,7 +161,7 @@
                                     <div class="portfolio-content text-center">
                                         <div class="portfolio-content-inner">
                                             <h4>
-                                                <a href="#">{{ makale.makale.makale_baslik }}</a>
+                                                <a href="../uploads/{{ makale.makale.makale_pdf_dosya }}">{{ makale.makale.makale_baslik }}</a>
                                             </h4>
                                             <h6>Yayınlayan: {{ makale.makale.makale_yazar }}</h6>
                                             <h6>Yayın tarihi: {{ makale.makale.makale_yukleme_tarihi }}</h6>

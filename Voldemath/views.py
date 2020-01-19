@@ -40,7 +40,7 @@ class Tum_paylasimlar(TemplateView):
         context['Paylasimlar'] = sayfalanmis.get_page(sayfa)
         context['count'] = Makale.objects.filter(makale_yayinlanmis_mi=True).count()
         return context
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
@@ -54,7 +54,7 @@ def paylasimci(request,user_id):
         Paylasimlar = []
         for paylasim in ordered_paylasimlar:
             Paylasimlar.append(paylasim)
-    
+
         Paylasimlar_W_Attr = []
         for j in range(len(Gonderi.objects.all())):
             if str(Paylasimlar[j].dosya).endswith(".png") or str(Paylasimlar[j].dosya).endswith(".JPG") or str(
@@ -73,7 +73,7 @@ def paylasimci(request,user_id):
         for gonderi in ordered_gonderis:
             Gonderiler.append(gonderi)
         Gonderiler_W_Attr = []
-        for j in range(len(Makale.objects.all())):
+        for j in range(len(Makale.objects.filter(makaleyi_paylasan=user))):
             if Gonderiler[j].makale_yayinlanmis_mi:
                 Gonderiler_W_Attr.append(
                     GonderiClass(Gonderiler[j].id, Gonderiler[j].makale_yazar, Gonderiler[j].makale_aciklama,
@@ -82,7 +82,7 @@ def paylasimci(request,user_id):
                                  Gonderiler[j].makale_anahtar_kelimeler,
                                  Gonderiler[j].makale_yayinlanmis_mi, Gonderiler[j].makale_baslik,
                                  Gonderiler[j].makale_arkaplan_resmi))
-    
+
         return render(request,"Giris_Yaptiktan_Sonra/paylasimci_sayfasi.html",{
             'user': user,
             'Tum_paylasimlar':Paylasimlar_W_Attr,
@@ -100,7 +100,7 @@ class Profilim(TemplateView):
         context = super(Profilim, self).get_context_data(**kwargs)
         context["count"] = Makale.objects.filter(makale_yayinlanmis_mi=True).count()
         return context
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
@@ -130,7 +130,7 @@ class Tum_paylasimcilar(TemplateView):
         context["Kullanici_Adet"] = kullanici_adet
         context["Paylasimci_Adet"] = len(paylasimcilar)
         return context
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
@@ -244,7 +244,7 @@ class MYFLOW(FormView):
             'data':sonuclar,
             'form': AramaMotoruForm
         })
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
@@ -326,7 +326,7 @@ class anasayfa(FormView):
         shuffle(rastGele)
         context["rastgeleKonular"] = rastGele[:3]
         return context  # eğer makale çok uzunsa ve bunu 1 sayfada değil de bölerek göstermek istiyorsak
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
@@ -398,7 +398,7 @@ def Takip(request,ders_id):
         return redirect(request.META['HTTP_REFERER'])
     else:
         return redirect("/giris/")
-    
+
 import datetime
 class Dergimiz(TemplateView):
     template_name = "Giris_Yapmadan_Once/about_gsumath.html"
@@ -438,7 +438,7 @@ class Change_Your_Password(FormView):
             else:
                 messages.error(self.request, "Eski veya yeni şifreleri hatalı girdiniz. Tekrar deneyiniz.")
                 return render("sifre_degistir/")
-            
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
@@ -526,7 +526,7 @@ class makale_paylasim(FormView):
 
     def form_invalid(self, form):
         return super(makale_paylasim, self).form_invalid(form)
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
@@ -565,11 +565,11 @@ class yeniKonu(FormView):
             ders_text= "Konu hk. bilgi..."
         )
         return super(yeniKonu, self).form_valid(form)
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
-        return super(yeniKonu, self).dispatch(request,*args,**kwargs)    
+        return super(yeniKonu, self).dispatch(request,*args,**kwargs)
 
 class yeniMakaleKonu(FormView):
     form_class = yeniMakaleKonuForm
@@ -581,7 +581,7 @@ class yeniMakaleKonu(FormView):
             konu_adi=form.cleaned_data["konuname"],
         )
         return super(yeniMakaleKonu, self).form_valid(form)
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.user.is_authenticated:
             return redirect("/giris/")
@@ -617,7 +617,7 @@ def yeniPaylasimci(request, user_id):
             return redirect("/yeni_paylasim/")
     else:
         return redirect("/giris/")
-    
+
 def yeniMakaleci(request,user_id):
     istek_yollayan_kullanici = User.objects.get(id=user_id)
     adminlerin_email_adresleri = []
@@ -702,7 +702,7 @@ class duyurular(TemplateView):
         sayfa = self.request.GET.get("sayfa", 1)  # eğer sayfa diye birşey tanımlı değilse, 1 yani ilk sayfayı göster
         context['duyurular'] = sayfalanmis.get_page(sayfa)
         return context
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect("/giris/")
