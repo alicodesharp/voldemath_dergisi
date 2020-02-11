@@ -16,7 +16,7 @@ class EgitmenAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'first_name' ,'last_name','email']
+    list_display = ['username', 'first_name' ,'last_name','email','last_login']
 
 class AnnouncementsAdmin(admin.ModelAdmin):
     list_display = ["baslik","text","gonderen_email"]
